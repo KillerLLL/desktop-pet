@@ -218,7 +218,10 @@ function persistRuntime() {
 // ---------- 托盘 ----------
 function createTray() {
   try {
-    tray = new Tray(nativeImage.createFromBuffer(buildPngIcon(32, [222, 83, 71])));
+    // 图标用黑猫一帧（cat.png，与快捷方式 cat.ico 同源）；缺文件时回退红点
+    let img = nativeImage.createFromPath(path.join(APP_DIR, 'cat.png')).resize({ width: 32, height: 32 });
+    if (img.isEmpty()) img = nativeImage.createFromBuffer(buildPngIcon(32, [222, 83, 71]));
+    tray = new Tray(img);
     tray.setToolTip('桌面宠物 · 监控 Claude Code / ZCode');
     tray.setContextMenu(Menu.buildFromTemplate([
       { label: '显示宠物', click: () => win && win.show() },
