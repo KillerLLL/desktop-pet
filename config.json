@@ -1,0 +1,13 @@
+{
+  "pollIntervalMs": 2000,
+  "workingWindowMs": 30000,
+  "claudeStaleWorkingMs": 900000,
+  "zcodeInFlightMaxAgeMs": 600000,
+  "sessionEndGraceMs": 2000,
+  "bubbleAutoCloseMs": 10000,
+  "watch": {
+    "claude": true,
+    "zcode": true
+  },
+  "sound": true
+}

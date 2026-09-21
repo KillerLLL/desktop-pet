@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self' data:" />
+  <title>Desktop Pet</title>
+  <link rel="stylesheet" href="pet.css" />
+</head>
+<body>
+  <div id="app" class="st-idle">
+    <div id="toasts">
+      <!-- 气泡是堆叠流的第一项：永远贴着猫头，与完成气泡排队不重叠 -->
+      <div id="bubble" class="hidden"></div>
+    </div>
+
+    <div id="pet-stage">
+      <!-- Token 用量角标（宠物左上角，与右上角状态角标对称；点击查看详情） -->
+      <div id="usage-badge" title="Token 用量"><span class="ub-ic"></span><span class="ub-val">用量</span></div>
+      <!-- 状态文字角标（宠物右上角） -->
+      <div id="state-text" class="idle"><i class="sdot"></i>空闲</div>
+      <!-- 工作用时角标（状态角标正下方，工作中每秒累积走表）；图标为 AI thinking 三点 -->
+      <div id="work-timer"><span class="wt-ic"><i></i><i></i><i></i></span><span class="wt-val">00:00</span></div>
+      <!-- 工作消耗角标（用时角标正下方）：本次任务累计 token 消耗（输入+输出）；图标为均衡柱 -->
+      <div id="work-tokens" title="本次任务 Token 消耗（输入+输出）"><span class="wk-ic"><i></i><i></i><i></i></span><span class="wk-val">0</span></div>
+      <!-- 工作中：打字猫（现成 SVG 动画） -->
+      <img id="cat-work" src="cat-typing.svg" alt="" draggable="false" />
+      <!-- 空闲：黑猫（现成 SVG 动画） -->
+      <img id="cat-idle" src="black-cat.svg" alt="" draggable="false" />
+      <!-- 完成：爱心 -->
+      <svg id="hearts" viewBox="0 0 200 180">
+        <defs>
+          <path id="hpath" d="M0 3 C0 0 -3.2 -1.6 -5.2 0.5 C-7.2 2.6 -4.5 5.8 0 9.5 C4.5 5.8 7.2 2.6 5.2 0.5 C3.2 -1.6 0 0 0 3 Z" />
+        </defs>
+        <use class="ht ht1" href="#hpath" x="38" y="26" fill="#ff6b81" />
+        <use class="ht ht2" href="#hpath" x="158" y="22" fill="#ff6b81" />
+        <use class="ht ht3" href="#hpath" x="170" y="92" fill="#ff8fa0" />
+        <use class="ht ht4" href="#hpath" x="26" y="96" fill="#ff8fa0" />
+      </svg>
+    </div>
+
+    <div id="history-panel" class="hidden">
+      <div class="panel-head">
+        <span class="panel-title" id="panel-title">完成历史</span>
+        <span class="panel-actions">
+          <button id="hist-clear" title="清空历史">清空</button>
+          <button id="hist-close" title="关闭"></button>
+        </span>
+      </div>
+      <div id="hist-list"></div>
+    </div>
+
+    <!-- 参数设置面板：config.json 的可视化入口（行由 pet.js 构建，改动实时生效） -->
+    <div id="settings-panel" class="hidden">
+      <div class="panel-head">
+        <span class="panel-title" id="settings-title" title="档位用 ‹ › 切换；点击数值可直接输入自定义时长（单位秒，也可写 3分 / 90秒，Enter 提交、Esc 取消）">参数设置</span>
+        <span class="panel-actions">
+          <button id="settings-reset" title="恢复默认值">默认</button>
+          <button id="settings-close" title="关闭"></button>
+        </span>
+      </div>
+      <div id="settings-list"></div>
+    </div>
+
+    <!-- Token 用量面板：配额进度条 + 模型用量；未配置时内嵌表单（内容由 pet.js 构建） -->
+    <div id="usage-panel" class="hidden">
+      <div class="panel-head">
+        <span class="panel-title" id="usage-title"></span>
+        <span class="panel-actions">
+          <button id="usage-set" title="配置厂家 API Key">设置</button>
+          <button id="usage-refresh" title="强制重新拉取">刷新</button>
+          <button id="usage-close" title="关闭"></button>
+        </span>
+      </div>
+      <div id="usage-body"></div>
+    </div>
+
+    <!-- 右键功能菜单：白卡片风格与历史面板同款（条目由 pet.js 构建） -->
+    <div id="context-menu" class="hidden"></div>
+  </div>
+
+  <script src="icons.js"></script>
+  <script src="click-lines.js"></script>
+  <script src="pet.js"></script>
+</body>
+</html>
